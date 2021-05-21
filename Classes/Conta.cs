@@ -6,11 +6,11 @@ namespace DIO.Bank
     {
         private static int NroOperacao = 1;
         private TipoConta TipoConta { get; set; }
-        private Decimal Saldo { get; set; }
-        private Decimal Credito { get; set; }
+        private decimal Saldo { get; set; }
+        private decimal Credito { get; set; }
         private string Nome { get; set; }
 
-        public Conta(TipoConta tipoConta, Decimal saldo, Decimal credito, string nome)
+        public Conta(TipoConta tipoConta, decimal saldo, decimal credito, string nome)
         {
             TipoConta = tipoConta;
             Saldo = saldo;
@@ -18,7 +18,7 @@ namespace DIO.Bank
             Nome = nome;
         }
 
-        public bool Sacar(Decimal valorSaque)
+        public bool Sacar(decimal valorSaque)
         {
             valorSaque = Math.Abs(valorSaque);
 
@@ -29,6 +29,8 @@ namespace DIO.Bank
             Console.WriteLine($"Valor saque:   R$ {valorSaque}");
             Console.WriteLine();
 
+            NroOperacao += 1;
+
             if (Saldo + Credito < valorSaque)
             {
                 Console.WriteLine("Saldo insuficiente!");
@@ -38,7 +40,6 @@ namespace DIO.Bank
             }
 
             Saldo -= valorSaque;
-            NroOperacao += 1;
 
             Console.WriteLine($"Operação bem sucedida!");
             Console.WriteLine($"Saldo atual: R$ {Saldo}");
@@ -47,7 +48,7 @@ namespace DIO.Bank
             return true;
         }
 
-        public void Depositar(Decimal valorDeposito)
+        public void Depositar(decimal valorDeposito)
         {
             Console.WriteLine($"Operação Nro: {NroOperacao}");
             Console.WriteLine($"Titular conta:  {Nome}");
@@ -60,6 +61,18 @@ namespace DIO.Bank
 
             Console.WriteLine($"Operação bem sucedida!");
             Console.WriteLine($"Saldo atual: R$ {Saldo}");
+            Console.WriteLine();
+        }
+
+        internal void Transferir(decimal valor, Conta contaDestino)
+        {
+            Console.WriteLine("*** Transferencia ***");
+            Console.WriteLine();
+
+            if (Sacar(valor))
+                contaDestino.Depositar(valor);
+
+            Console.WriteLine("*** Fim Transferencia ***");
             Console.WriteLine();
         }
     }
