@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 
-namespace DIO.Bank
+namespace DIO.Bank.Entities
 {
     public class Conta
     {
@@ -10,12 +11,20 @@ namespace DIO.Bank
         private decimal Credito { get; set; }
         private string Nome { get; set; }
 
+        private static List<Conta> _listaContas = new List<Conta>();
+
         public Conta(TipoConta tipoConta, decimal saldo, decimal credito, string nome)
         {
             TipoConta = tipoConta;
             Saldo = saldo;
             Credito = credito;
             Nome = nome;
+            _listaContas.Add(this);
+        }
+
+        public static List<Conta> ListarContas()
+        {
+            return _listaContas;
         }
 
         public bool Sacar(decimal valorSaque)
@@ -64,7 +73,7 @@ namespace DIO.Bank
             Console.WriteLine();
         }
 
-        internal void Transferir(decimal valor, Conta contaDestino)
+        public void Transferir(decimal valor, Conta contaDestino)
         {
             Console.WriteLine("*** Transferencia ***");
             Console.WriteLine();
@@ -74,6 +83,11 @@ namespace DIO.Bank
 
             Console.WriteLine("*** Fim Transferencia ***");
             Console.WriteLine();
+        }
+
+        public override string ToString()
+        {
+            return $"{TipoConta} {Nome} {Saldo} {Credito}";
         }
     }
 }
